@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { userInfo } from 'os';
 
 Vue.use(Router)
 
@@ -7,8 +8,18 @@ export default new Router({
   routes: [
     {
       path: '/user',
+      name:'user',
       component: () => import('../page/user/home.vue'), // 组件懒加载
-      meta: ['用户中心'],
+      children:[{
+        path:'pass',
+        component:()=>import('../page/user/pass.vue'),
+        meta:['已审核'],
+      },
+      {
+        path:'notpass',
+        component:()=>import('../page/user/notpass.vue'),
+        meta:['未审核'],
+      }]
     },
     {
       path: '/user/login',
