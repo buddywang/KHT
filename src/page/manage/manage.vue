@@ -50,7 +50,7 @@
                             <el-breadcrumb-item :to="{ path: '/manage' }">首页</el-breadcrumb-item>
                             <el-breadcrumb-item v-for="(item, index) in $route.meta" :key="index">{{item}}</el-breadcrumb-item>
                         </el-breadcrumb>
-                        <span style="line-height:100px; position:absolute; right:100px;">你好，xxx</span>
+                        <span style="position:absolute; right:100px;top:18px;">你好，xxx</span>
                         <i class="el-icon-s-custom img"></i>
                     </el-header>
                     <el-main>
@@ -94,7 +94,7 @@ export default {
 }
 .el-header{
     height: 100px;
-    background-color: #EFF2F7;
+    background-color: #DCDFE6;
     display: flex;
     align-items: center;
 }
@@ -102,5 +102,6 @@ export default {
     font-size: 35px;
     position: absolute;
     right: 50px;
+    top:13px;
 }
 </style>
