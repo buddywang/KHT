@@ -10,7 +10,7 @@
           <el-dialog title="请填写机构信息" :visible.sync="dialogAddFormVisible" append-to-body>
             <el-form :model="ORG" :rules="rules" ref="ORG" label-width="100px">
               <el-form-item prop="code" label="机构编号" :label-width="formLabelWidth">
-                <el-input v-model="ORG.code" ></el-input>
+                <el-input v-model="ORG.code"></el-input>
               </el-form-item>
               <el-form-item prop="name" label="机构名称" :label-width="formLabelWidth">
                 <el-input v-model="ORG.name"></el-input>
@@ -103,7 +103,7 @@
         :current-page="currentPage"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
-        :total="totalNum"
+        :total="getLength"
       ></el-pagination>
     </div>
   </div>
@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       position: 0,
-      totalNum: 100,
+      
       pagesize: 8,
       pagesizes: [8, 14, 22, 30],
       currentPage: 1,
@@ -322,7 +322,7 @@ export default {
       multipleSelection: [],
 
       dialogAddFormVisible: false,
-      addData:{},
+      addData: {},
       dialogChangeFormVisible: false,
       //pageValue: false,
       ORG: {
@@ -341,7 +341,10 @@ export default {
             trigger: "blur"
           },
           { min: 4, max: 4, message: "长度为4个字符", trigger: "blur" },
-          { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/, message: '不允许输入空格等特殊符号' }
+          {
+            pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/,
+            message: "不允许输入空格等特殊符号"
+          }
         ],
         name: [
           {
@@ -349,7 +352,7 @@ export default {
             message: "不给一下机构名称怎么行",
             trigger: "blur"
           },
-          {min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" },
+          { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" }
           //{ pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/, message: '不允许输入空格等特殊符号' }
         ],
         addr: [
@@ -358,7 +361,7 @@ export default {
             message: "没有地址找不到啊。。。",
             trigger: "blur"
           },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" },
+          { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" }
           //{ pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/, message: '不允许输入空格等特殊符号' }
         ],
         tel: [
@@ -368,7 +371,10 @@ export default {
             trigger: "blur"
           },
           { min: 11, max: 11, message: "手机号都是11位的哦", trigger: "blur" },
-          { pattern: /^1[3|4|5|7|8][0-9]\d{8}$/, message: '输入不符合手机号规则' }
+          {
+            pattern: /^1[3|4|5|7|8][0-9]\d{8}$/,
+            message: "输入不符合手机号规则"
+          }
         ]
       }
     };
@@ -388,12 +394,15 @@ export default {
         });
       }
       return this.tableData;
+    },
+    getLength: function(){
+      return this.tableData.length;
     }
   },
   methods: {
-    add(ORG){
-      this.addData={};
-      this.dialogAddFormVisible=true;
+    add(ORG) {
+      this.addData = {};
+      this.dialogAddFormVisible = true;
       //console.log(this.tableData.length);
       this.$refs[ORG].resetFields();
     },
@@ -416,10 +425,10 @@ export default {
         message: "机构添加成功",
         type: "success"
       });
+      
       this.$refs[ORG].resetFields();
       this.dialogAddFormVisible = false;
     },
-
 
     deleteRow(index) {
       let that = this;
@@ -431,6 +440,8 @@ export default {
       })
         .then(() => {
           that.tableData.splice(index, 1);
+          
+          v;
           this.$message({
             type: "success",
             message: "删除成功!",
@@ -453,6 +464,7 @@ export default {
 
     delAll(index) {
       const length = this.multipleSelection.length;
+      console.log(length);
       if (length > 0) {
         this.$confirm("此操作将永久删除这些机构, 是否继续?", "提示", {
           confirmButtonText: "确定",
@@ -466,6 +478,7 @@ export default {
                 this.tableData.indexOf(this.multipleSelection[i]),
                 1
               );
+              
               //console.log(this.tableData.indexOf(this.multipleSelection[i]));
             }
             this.$message({
@@ -510,11 +523,11 @@ export default {
       this.ORG.name = scope.row.ORG_name;
       this.ORG.addr = scope.row.ORG_addr;
       this.ORG.tel = scope.row.ORG_tel;
-      this.position = this.tableData.indexOf(scope.row);//记下点击的行号
+      this.position = this.tableData.indexOf(scope.row); //记下点击的行号
       //console.log(this.position);
     },
     change_sure() {
-      this.tableData[this.position].ORG_code = this.ORG.code; 
+      this.tableData[this.position].ORG_code = this.ORG.code;
       this.tableData[this.position].ORG_name = this.ORG.name;
       this.tableData[this.position].ORG_addr = this.ORG.addr;
       this.tableData[this.position].ORG_tel = this.ORG.tel;
