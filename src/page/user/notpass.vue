@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row>
+        <el-row class="row">
                 <el-card><p>您的资料尚未审核通过</p><el-link style="color:orange" @click="info=true">提交资料审核</el-link></el-card>
         </el-row>
         <el-dialog style="text-align:left" title="审核资料填写" :visible.sync="info" width="50%" :modal-append-to-body='false'>
@@ -78,20 +78,40 @@
                 <el-row>
                     <el-col :span="8">
                         <el-form-item label="学历:" label-width="30%">
-                            <el-input v-model="infoForm.ecucation"></el-input>
+                            <el-select v-model="infoForm.education">
+                                <el-option v-for="item in education" :key="item.code" :label="item.name" :value="item.code"></el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="16">
                         <el-form-item label="营业网点:" label-width="30%">
                             <el-select v-model="infoForm.organization">
-                                <el-option v-model=organization label="organization.name" value="organization.code"></el-option>
+                                <el-option v-for="item in organization" :key="item.code" :label="item.name" :value="item.code"></el-option>
                             </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item label="银行类型:" label-width="30%">
+                            <el-select v-model="infoForm.bankType">
+                                <el-option v-for="item in bankType" :key="item.code" :label="item.name" :value="item.code"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="16">
+                        <el-form-item label="银行号码:" label-width="30%">
+                            <el-input v-model="infoForm.bankCode"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
                 <el-button type="warning" style="margin-left:30px" @click="info=false" plain>取消</el-button>
-                <el-button type="success" style="margin-left:550px" @click="info=false" plain>确认</el-button>
+                <el-button type="success" style="margin-left:550px" @click="info=false,picVid=true" plain>下一步</el-button>
+        </el-dialog>
+        <el-dialog style="text-align:left" title="影像资料上传" :visible.sync="picVid" width="50%" :modal-append-to-body='false'>
+            <el-button type="warning" style="margin-left:30px" @click="picVid=false" plain>取消</el-button>
+            <el-button type="success" style="margin-left:550px" @click="picVid=false" plain>提交</el-button>
         </el-dialog>
     </div>
 </template>
@@ -100,7 +120,8 @@
 export default {
     data(){
         return{
-            info:true,
+            picVid:false,
+            info:false,
             infoForm:{
                 name:'',
                 gender:'',
@@ -115,18 +136,32 @@ export default {
                 company:'',
                 education:'',
                 roganization:'',
+                bankType:'',
+                bankCard:'',
             },
-            organization:{
+            organization:[{
                 name:'名字',
                 code:'1',
-            }
+            }],
+            education:[{
+                name:'名字',
+                code:'1',
+            }],
+            bankType:[{
+                name:'名字',
+                code:'1',
+            }],
         }
     }
 }
 </script>
 
 <style scoped>
+.row{
+    margin-top:100px;
+}
 .el-card{
+    text-align: center;
     display:table-cell;
     color:rgb(255, 255, 255);
     vertical-align:middle; 
